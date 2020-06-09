@@ -19,6 +19,7 @@ const getHandlerArr = (asyncapi, resourceType) => {
   return asyncapi.channelNames().map(channelName => {
     const channel = asyncapi.channels()[channelName];
     const topicName = convertCurlyBracestoHashtag(channelName);
+    const resourceURI = `${resourceType}URI`
     return {
         settings: {
             topic: topicName,
@@ -26,7 +27,7 @@ const getHandlerArr = (asyncapi, resourceType) => {
         action: {
             ref : `#${resourceType}`,
             settings: {
-                flowURI: `res://${resourceType}:${channel.publish()? channel.publish().id(): channel.subscribe().id()}`
+                [resourceURI] :`res://${resourceType}:${channel.publish()? channel.publish().id(): channel.subscribe().id()}`
             }
         }
     }
@@ -59,7 +60,6 @@ const getHandlersFromServers = (asyncapi, resourceType) => {
 allFunctions.generateFlogoJson = (asyncapi, resourceType) => {
   const channels = asyncapi.channels();
   const servers = asyncapi.servers();
-  const flogo = `github.com/project-flogo/${resourceType}`;
   const importArr = Object.keys(servers).map((serverName, index) => {
     const currServer = asyncapi.server(serverName);
     let protocol = currServer.protocol();
