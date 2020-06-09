@@ -3,32 +3,24 @@ const path = require('path');
 
 module.exports = {
   'generate:before': generator => {
-    const channels = generator.asyncapi.channels();
+    const asyncapi = generator.asyncapi;
+    const channels = asyncapi.channels();
+    const channelNames = asyncapi.channelNames();
+    console.log(asyncapi.info().description());
 
     let channelInfo = {
-      channels: Object.entries(channels).map((eachChannel, index) => {
-        console.log(eachChannel);
-        if('subscribe' in eachChannel[1]._json){
-          return {name: eachChannel[0], operations:[{name: "subscribe", id: eachChannel[1]._json.subscribe.operationId}]};
+      channels: channelNames.map(channelName => {
+        const channel = channels[channelName];
+        if(channel.hasPublish()){
+          return {name: channelName, operations: [{name: "publish", id: channel.publish().id()}]}
         }
-        return {name: eachChannel[0], operations:[{name: "publish", id: eachChannel[1]._json.publish.operationId }]};
+        else if(channel.hasSubscribe()){
+          return {name: channelName, operations: [{name: "subscribe", id: channel.subscribe().id()}]}
+        }
       })
+      
     }
-    fs.writeFileSync(path.resolve(generator.targetDir, `flogo.json`), JSON.stringify(asyncapi,null,2));
+    fs.writeFileSync(path.resolve(generator.targetDir, `flogo.json`), JSON.stringify(generator.asyncapi.json(),null,2));
     fs.writeFileSync(path.resolve(generator.targetDir, `channels.json`), JSON.stringify(channelInfo,null,2));
-  }/*,
-  'generate:after': generator => {
-    fs.readdir(generator.targetDir, (err, files) => {
-      files.forEach((filename, index) => {
-        if(filename !== `flogo.json`){
-          fs.unlink(path.resolve(generator.targetDir, filename), (err) => {
-            if(err){
-              console.log(err);d
-            }
-            return;
-          });
-        }
-      })
-    })
-  }*/
-};
+  }
+}
