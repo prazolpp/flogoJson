@@ -1,6 +1,6 @@
-
 const fs = require('fs');
 const path = require('path');
+const allFunctions = {}
 
 const convertCurlyBracestoHashtag = (path) => {
   return path.split('/').reduce((acc, eachWord, index) => {
@@ -56,7 +56,7 @@ const getHandlersFromServers = (asyncapi, resourceType) => {
   });
 }
 
-const generateFlogoJson = (asyncapi, resourceType) => {
+allFunctions.generateFlogoJson = (asyncapi, resourceType) => {
   const channels = asyncapi.channels();
   const servers = asyncapi.servers();
   const flogo = `github.com/project-flogo/${resourceType}`;
@@ -64,11 +64,11 @@ const generateFlogoJson = (asyncapi, resourceType) => {
     const currServer = asyncapi.server(serverName);
     let protocol = currServer.protocol();
     switch (protocol){
-      case 'https' || 'http':         return "github.com/project-flogo/contrib/trigger/rest";
+      case 'https' || 'http'        : return "github.com/project-flogo/contrib/trigger/rest";
       case 'kafka' || 'kafka-secure': return "github.com/project-flogo/contrib/trigger/kafka";
-      case 'mqtt':                    return "github.com/project-flogo/edge-contrib/trigger/mqtt";
-      case 'ws' || 'wss':             return "github.com/project-flogo/websocket/trigger/wsserver";
-      case 'stomp':                   return "github.com/jvanderl/flogo-components/trigger/stomp";                            
+      case 'mqtt'                   : return "github.com/project-flogo/edge-contrib/trigger/mqtt";
+      case 'ws' || 'wss'            : return "github.com/project-flogo/websocket/trigger/wsserver";
+      case 'stomp'                  : return "github.com/jvanderl/flogo-components/trigger/stomp";                            
     }
   });
 
@@ -85,13 +85,4 @@ const generateFlogoJson = (asyncapi, resourceType) => {
   }
 }
 
-module.exports = {
-    'generate:before': generator => {
-      let resourceType = 'flow';
-      if(generator.templateParams && generator.templateParams['resourceType'] === 'stream'){
-        resourceType = 'stream';
-      }
-      const finalInfo = generateFlogoJson(generator.asyncapi, resourceType);
-      fs.writeFileSync(path.resolve(generator.targetDir, `flogo.json`), JSON.stringify(finalInfo,null,2));
-    }
-  }
+module.exports = allFunctions;

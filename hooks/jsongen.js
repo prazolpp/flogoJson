@@ -18,7 +18,6 @@ module.exports = {
       })
       
     }
-    fs.writeFileSync(path.resolve(generator.targetDir, `flogo.json`), JSON.stringify(generator.asyncapi.json(),null,2));
-    fs.writeFileSync(path.resolve(generator.targetDir, `channels.json`), JSON.stringify(channelInfo,null,2));
+    //fs.writeFileSync(path.resolve(generator.targetDir,`channels.json`), JSON.stringify(channelInfo,null,2));
   }
 }

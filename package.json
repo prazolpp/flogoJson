@@ -10,7 +10,13 @@
   "dependencies": {
     "nunjucks": "^3.2.1"
   },
-  "generator":{
-	"generator": "<2.0.0"
-   } 
+  "generator": {
+    "generator": "<2.0.0",
+    "parameters": {
+      "resourceType": {
+        "description": "Defines the type of resource. It can be either 'stream' or 'flow', at least at the moment.",
+        "required": false
+      }
+    }
+  }
 }
