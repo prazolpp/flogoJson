@@ -6,8 +6,6 @@ module.exports = {
     const asyncapi = generator.asyncapi;
     const channels = asyncapi.channels();
     const channelNames = asyncapi.channelNames();
-    console.log(asyncapi.info().description());
-
     let channelInfo = {
       channels: channelNames.map(channelName => {
         const channel = channels[channelName];

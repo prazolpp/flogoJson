@@ -11,18 +11,25 @@ module.exports = {
       const description = asyncapi.info().description();
       const channels = asyncapi.channels();
       const channelNames = asyncapi.channelNames();
-  
       const serverObjs = asyncapi.servers();
-
-
+      
       const serverArr = Object.entries(serverObjs).map(([serverName, serverInfo], index) => {
         const currServer = asyncapi.server(serverName);
         const handlers = channelNames.map(channelName => {
             const channel = channels[channelName];
-            //const topicName = Array.from(channelName.matchAll(/\{(\w+)}/g)).reduce((acc,e) => {return `${acc}#${e[1]}`},'');
+            const topicName = channelName.split('/').reduce((acc, eachWord, index) => {
+              let forwardSlash = '';
+              if(index > 0){
+                forwardSlash = '/';
+              }
+              if(eachWord.charAt(0) === '{' && eachWord.charAt(eachWord.length - 1) === '}'){
+                return acc + forwardSlash + '#' + eachWord.substring(1, eachWord.length - 1);
+              }
+              return acc + forwardSlash + eachWord;
+            },'');
             return {
                 settings: {
-                    topic: channelName,
+                    topic: topicName,
                 },
                 action: {
                     ref : "#flow",
