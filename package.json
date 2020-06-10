@@ -16,6 +16,10 @@
       "resourceType": {
         "description": "Defines the type of resource. It can be either 'stream' or 'flow', at least at the moment.",
         "required": false
+      },
+      "protocol":{
+        "description": "Defines the type of server",
+        "required": false
       }
     }
   }
