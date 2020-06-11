@@ -4,7 +4,7 @@ const getHandlerArr = (asyncapi, resourceType) => {
   return asyncapi.channelNames().map(channelName => {
     const channel = asyncapi.channels()[channelName];
     const topicName = convertCurlyBracestoHashtag(channelName);
-    const resourceURI = `${resourceType}URI` 
+    const resourceURI = `${resourceType}URI`;
 
     return {
         settings: {
@@ -23,7 +23,7 @@ const getHandlerArr = (asyncapi, resourceType) => {
 const getResourcesArr = (asyncapi, resourceType) => {
   return asyncapi.channelNames().map((channelName, index) => {
     const channel = asyncapi.channels()[channelName];
-    return {id: `${resourceType}:${channel.publish()? channel.publish().id(): channel.subscribe().id()}`, data: {}}
+    return {id: `${resourceType}:${channel.publish()? channel.publish().id(): channel.subscribe().id()}`, data: {}};
   })
 }
 

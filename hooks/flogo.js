@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const flogoGenerator = require('./flogoFunctions.js');
+const flogoGenerator = require('./flogoGenerator.js');
 
 module.exports = {
     'generate:before': generator => {
@@ -9,10 +9,10 @@ module.exports = {
       if(generator.templateParams && generator.templateParams['resourceType'] === 'stream'){  //also pass server
         resourceType = 'stream';
       }
-      if(generator.templateParams['protocol']){
+      if(generator.templateParams && generator.templateParams['protocol']){
         protocol = generator.templateParams['protocol'];
       }
-      const flogoJson = flogoGenerator(generator.asyncapi, resourceType, protocol);
-      fs.writeFileSync(path.resolve(generator.targetDir, `flogo.json`), JSON.stringify(flogoJson,null,2));
+      const flogoJSON = flogoGenerator(generator.asyncapi, resourceType, protocol);
+      fs.writeFileSync(path.resolve(generator.targetDir, `flogo.json`), JSON.stringify(flogoJSON,null,2));
     }
 }
