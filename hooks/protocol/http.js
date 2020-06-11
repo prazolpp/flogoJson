@@ -14,7 +14,7 @@ const getHandlerArr = (asyncapi, resourceType) => {
         action: {
             ref : `#${resourceType}`,
             settings: {
-                [resourceURI] :`res://${resourceType}:${channel.publish()? channel.publish().id(): channel.subscribe().id()}`;
+                [resourceURI] :`res://${resourceType}:${channel.publish()? channel.publish().id(): channel.subscribe().id()}`
             }
         }
     }
