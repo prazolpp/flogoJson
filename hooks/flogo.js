@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const flogoGenerator = require('./flogoGenerator.js');
+const flogoGenerator = require('./flogo-generator.js');
 
 module.exports = {
     'generate:before': generator => {

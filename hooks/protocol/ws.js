@@ -1,4 +1,4 @@
-const convertCurlyBracestoHashtag = require('./convertCurlyBracestoHashtag.js');
+const convertCurlyBracestoHashtag = require('./convert-curly-braces-to-hashtag.js');
 
 const getHandlerArr = (asyncapi, resourceType) => {
   return asyncapi.channelNames().map(channelName => {
