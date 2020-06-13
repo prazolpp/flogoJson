@@ -6,8 +6,8 @@ const getHandlerArr = (asyncapi, resourceType) => {
     const topicName = convertCurlyBracesToHashtag(channelName);
     const resourceURI = `${resourceType}URI`;
 
-    //todo: determine the functions to structure the returned object 
-    return { 
+    //todo: determine the functions to structure the returned object
+    return {
       settings: {
         topic: topicName,
       },
@@ -47,8 +47,7 @@ const getHandlersFromServers = (asyncapi, resourceType) => {
       return {
         id: serverName,
         ref: `#${protocol}`,
-        settings: {
-        },
+        settings: {},
         handlers: getHandlerArr(asyncapi, resourceType, protocol),
       };
     }
