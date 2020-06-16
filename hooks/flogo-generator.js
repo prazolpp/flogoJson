@@ -1,8 +1,13 @@
 const getProtocol = require("./protocols");
 
 const flogoGenerator = (asyncapi, resourceType, protocol) => {
+  let generateFlogo = "";
   if (getProtocol(protocol)) {
-    const generateFlogo = getProtocol(protocol);
+    generateFlogo = getProtocol(protocol);
+  }
+  else{
+    generateFlogo = getProtocol("mqtt");
+  }
     const { imports, triggers, resources } = generateFlogo(
       asyncapi,
       resourceType
