@@ -18,7 +18,7 @@
         "required": false
       },
       "protocol": {
-        "description": "Defines the type of server",
+        "description": "Defines the type of server. ",
         "required": false
       }
     }

@@ -19,7 +19,7 @@ const flogoGenerator = (asyncapi, resourceType, protocol) => {
       resources,
     };
   }
-  throw new Error("The entered protocol is not found!");
+  throw new Error(`Protocol "${protocol}" is not supported by this template.`);
 };
 
 module.exports = flogoGenerator;
