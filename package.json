@@ -1,29 +1,28 @@
 {
-  "name": "flogojson",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "asyncapi-gen",
+  "version": "0.1.0",
+  "author": "Project Flogo",
+  "description": "Flogo App template for the AsyncAPI Generator",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "repository": {
+    "url": "https://github.com/project-flogo/asyncapi-gen"
   },
-  "author": "Prajwal Pyakurel",
-  "license": "ISC",
-  "dependencies": {
-    "nunjucks": "^3.2.1"
+  "devDependencies": {
+    "prettier": "2.0.5"
   },
   "generator": {
     "generator": "<2.0.0",
     "parameters": {
-      "resourceType": {
-        "description": "Defines the type of resource. It can be either 'stream' or 'flow', at least at the moment.",
+      "server": {
+        "description": "The server you want to use in the Flogo app. If not specified defaults to the first server that can be found.",
         "required": false
       },
-      "protocol": {
-        "description": "Defines the type of server. ",
+      "resourceType": {
+        "description": "The Flogo resource type to generate. Defaults to 'flow'.",
+        "default": "flow",
         "required": false
       }
     }
-  },
-  "devDependencies": {
-    "prettier": "2.0.5"
   }
 }
