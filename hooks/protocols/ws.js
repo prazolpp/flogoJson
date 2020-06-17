@@ -37,35 +37,30 @@ const getResourcesArr = (asyncapi, resourceType) => {
   });
 };
 
-const getHandlersFromServers = (asyncapi, resourceType) => {
-  return Object.entries(asyncapi.servers()).map(
-    ([serverName, serverInfo], index) => {
-      const currServer = asyncapi.server(serverName);
-      let brokerUrl = currServer.url();
-      let protocol = currServer.protocol();
-      //todo: determine the functions to structure the returned object
-      return {
-        id: serverName,
-        ref: `#${protocol}`,
-        settings: {},
-        handlers: getHandlerArr(asyncapi, resourceType, protocol),
-      };
-    }
-  );
-};
-
-const getImports = (resourceType) => {
+const getHandlersFromServers = (asyncapi, serverName, resourceType) => {
+  const currServer = asyncapi.server(serverName);
+  let brokerUrl = currServer.url();
+  let protocol = currServer.protocol();
+  //todo: determine the functions to structure the returned object
   return [
-    `github.com/project-flogo/${resourceType}`,
-    "github.com/project-flogo/websocket/trigger/wsserver",
+    {
+      id: serverName,
+      ref: `#${protocol}`,
+      settings: {},
+      handlers: getHandlerArr(asyncapi, resourceType, protocol),
+    },
   ];
 };
 
-const generateJson = (asyncapi, resourceType) => {
+const getImports = () => {
+  return ["github.com/project-flogo/websocket/trigger/wsserver"];
+};
+
+const generateJson = (asyncapi, serverName, resourceType) => {
   return {
-    triggers: getHandlersFromServers(asyncapi, resourceType),
+    triggers: getHandlersFromServers(asyncapi, serverName, resourceType),
     resources: getResourcesArr(asyncapi, resourceType),
-    imports: getImports(resourceType),
+    imports: getImports(),
   };
 };
 

@@ -6,14 +6,14 @@ module.exports = {
   "generate:before": (generator) => {
     let resourceType = "flow";
     let server = "";
-    if (
-      generator.templateParams &&
-      generator.templateParams["resourceType"] === "stream"
-    ) {
-      resourceType = "stream";
-    }
-    if (generator.templateParams && generator.templateParams["server"]) {
-      server = generator.templateParams["server"];
+
+    if (generator.templateParams) {
+      if (generator.templateParams["resourceType"] === "stream") {
+        resourceType = "stream";
+      }
+      //if server entered as parameter use it, else set it as ""
+      let serverFromParam = generator.templateParams["server"];
+      server = serverFromParam ? serverFromParam : "";
     }
     const flogoJSON = flogoGenerator(generator.asyncapi, resourceType, server);
     fs.writeFileSync(

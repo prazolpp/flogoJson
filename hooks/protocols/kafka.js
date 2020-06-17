@@ -38,36 +38,31 @@ const getResourcesArr = (asyncapi, resourceType) => {
 };
 
 //todo: determine the functions to structure the returned object
-const getHandlersFromServers = (asyncapi, resourceType) => {
-  return Object.entries(asyncapi.servers()).map(
-    ([serverName, serverInfo], index) => {
-      const currServer = asyncapi.server(serverName);
-      let brokerUrl = currServer.url();
-      let protocol = currServer.protocol();
-      return {
-        id: serverName,
-        ref: `#${protocol}`,
-        settings: {
-          port: currServer.variable("port").defaultValue(), //todo: defaultValue in all protocols?
-        },
-        handlers: getHandlerArr(asyncapi, resourceType, protocol),
-      };
-    }
-  );
-};
-
-const getImports = (resourceType) => {
+const getHandlersFromServers = (asyncapi, serverName, resourceType) => {
+  const currServer = asyncapi.server(serverName);
+  let brokerUrl = currServer.url();
+  let protocol = currServer.protocol();
   return [
-    `github.com/project-flogo/${resourceType}`,
-    "github.com/project-flogo/contrib/trigger/kafka",
+    {
+      id: serverName,
+      ref: `#${protocol}`,
+      settings: {
+        port: currServer.variable("port").defaultValue(), //todo: defaultValue in all protocols?
+      },
+      handlers: getHandlerArr(asyncapi, resourceType, protocol),
+    },
   ];
 };
 
-const generateJson = (asyncapi, resourceType) => {
+const getImports = () => {
+  return ["github.com/project-flogo/contrib/trigger/kafka"];
+};
+
+const generateJson = (asyncapi, serverName, resourceType) => {
   return {
-    triggers: getHandlersFromServers(asyncapi, resourceType),
+    triggers: getHandlersFromServers(asyncapi, serverName, resourceType),
     resources: getResourcesArr(asyncapi, resourceType),
-    imports: getImports(resourceType),
+    imports: getImports(),
   };
 };
 

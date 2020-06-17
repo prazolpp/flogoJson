@@ -37,35 +37,30 @@ const getResourcesArr = (asyncapi, resourceType) => {
 };
 
 //todo: determine the functions to structure the returned object
-const getHandlersFromServers = (asyncapi, resourceType) => {
-  return Object.entries(asyncapi.servers()).map(
-    ([serverName, serverInfo], index) => {
-      const currServer = asyncapi.server(serverName);
-      let brokerUrl = currServer.url();
-      return {
-        id: serverName,
-        ref: `#${currServer.protocol()}`,
-        settings: {
-          address: currServer.variable("port").defaultValue(), //????
-        },
-        handlers: getHandlerArr(asyncapi, resourceType, currServer.protocol()),
-      };
-    }
-  );
-};
-
-const getImports = (resourceType) => {
+const getHandlersFromServers = (asyncapi, serverName, resourceType) => {
+  const currServer = asyncapi.server(serverName);
+  let brokerUrl = currServer.url();
   return [
-    `github.com/project-flogo/${resourceType}`,
-    "github.com/jvanderl/flogo-components/trigger/stomp",
+    {
+      id: serverName,
+      ref: `#${currServer.protocol()}`,
+      settings: {
+        address: currServer.variable("port").defaultValue(), //????
+      },
+      handlers: getHandlerArr(asyncapi, resourceType, currServer.protocol()),
+    },
   ];
 };
 
-const generateJson = (asyncapi, resourceType) => {
+const getImports = () => {
+  return ["github.com/jvanderl/flogo-components/trigger/stomp"];
+};
+
+const generateJson = (asyncapi, serverName, resourceType) => {
   return {
-    triggers: getHandlersFromServers(asyncapi, resourceType),
+    triggers: getHandlersFromServers(asyncapi, serverName, resourceType),
     resources: getResourcesArr(asyncapi, resourceType),
-    imports: getImports(resourceType),
+    imports: getImports(),
   };
 };
 
