@@ -5,7 +5,7 @@ const FLOGO_APP_MODEL = "1.1.0";
 const flogoGenerator = (asyncapi, resourceType, server) => {
   //if server passed in is not "", use it, else use all servers in the document
   let servers = server
-    ? [asyncapi.server(server)]
+    ? [server]
     : Object.keys(asyncapi.servers());
 
   const imports = [`github.com/project-flogo/${resourceType}`];
@@ -13,6 +13,7 @@ const flogoGenerator = (asyncapi, resourceType, server) => {
   const resources = [];
 
   servers.forEach((eachServer) => {
+    console.log(eachServer);
     let currentProtocol = asyncapi.server(eachServer).protocol();
     const generateFlogo = getConverter(currentProtocol);
     const result = generateFlogo(asyncapi, eachServer, resourceType);
